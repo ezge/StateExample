@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,12 +39,13 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun DemoScreen(modifier: Modifier = Modifier) {
-    var textState by remember { mutableStateOf("") }
+    var textState by rememberSaveable { mutableStateOf("") }
     val onTextChange = { text: String -> textState = text }
     Column (horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
             modifier = modifier.fillMaxSize()){
-            MyTextField(text = textState, onTextChange = onTextChange)
+            MyTextField(text = textState,
+                        onTextChange = onTextChange)
     }
 }
 
@@ -52,24 +54,6 @@ fun MyTextField(text: String, onTextChange: (String) -> Unit){
 
         TextField(value = text,
                   onValueChange = onTextChange)
-        FunctionA()
-}
-
-@Composable
-fun FunctionA(){
-    var switchState by remember { mutableStateOf(true) }
-    val onSwitchChange = { value: Boolean -> switchState = value }
-
-    FunctionB(switchState = switchState,
-              onSwitchChange = onSwitchChange)
-
-}
-
-@Composable
-fun FunctionB(switchState: Boolean, onSwitchChange: (Boolean) -> Unit){
-    Switch(checked = switchState,
-           onCheckedChange = onSwitchChange)
-
 }
 
 @Preview(showBackground = true)
